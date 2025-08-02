@@ -4,6 +4,8 @@ const dotenv= require('dotenv')
 const connectDB= require('./utils/connectdb.js');
 const authRoutes= require('./routes/authRoutes.js')
 const cookieParser = require('cookie-parser');
+const tripRoutes= require('./routes/tripRoutes.js')
+
 
 dotenv.config()
 const app= express();
@@ -15,6 +17,7 @@ app.use(cookieParser());
 
 //Routes
 app.use('/api/auth', authRoutes)
+app.use('/api/trips', tripRoutes)
 
 
 app.listen(PORT, async ()=>{
