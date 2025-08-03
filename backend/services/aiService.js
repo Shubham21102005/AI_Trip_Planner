@@ -8,7 +8,6 @@ if (!GEMINI_API_KEY) {
 }
 
 const ai = new GoogleGenAI({ apiKey: GEMINI_API_KEY });
-// Use `{ vertexai: true, project, location }` if you're calling via Vertex AI.
 
 const tripResponseSchema = {
   type: Type.OBJECT,
@@ -88,6 +87,7 @@ export async function createTripAI(location, budget, people, duration) {
   ) {
     throw new Error('Invalid input parameters');
   }
+  
 
   const prompt = generatePrompt(location, budget, people, duration);
 

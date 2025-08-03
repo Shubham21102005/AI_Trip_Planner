@@ -9,9 +9,16 @@ const tripRoutes= require('./routes/tripRoutes.js')
 
 dotenv.config()
 const app= express();
-const PORT= process.env.PORT;
+const PORT= process.env.PORT || 5000;
 
-app.use(cors());
+// CORS configuration for credentials
+app.use(cors({
+  origin: 'http://localhost:5173', // Frontend URL
+  credentials: true, // Allow credentials
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
 app.use(express.json());
 app.use(cookieParser()); 
 
