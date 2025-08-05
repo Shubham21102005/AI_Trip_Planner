@@ -1,93 +1,90 @@
-import { Eye, Trash2, MapPin } from 'lucide-react';
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { MapPin, Users, Calendar, DollarSign, Eye, Trash2 } from 'lucide-react';
 
-const TripCard = ({ trip, onView, onDelete }) => {
-  const { location, budget, duration, people } = trip;
-
-  // Generate a unique gradient based on location for visual consistency
-  const locationGradients = {
-    Paris: 'from-blue-500/20 to-purple-500/20',
-    Tokyo: 'from-rose-500/20 to-amber-500/20',
-    NewYork: 'from-indigo-500/20 to-sky-500/20',
-    Bali: 'from-emerald-500/20 to-teal-500/20',
-    Rome: 'from-amber-500/20 to-orange-500/20',
-    Default: 'from-slate-700/20 to-slate-800/20'
+const TripCard = ({ trip, onDelete }) => {
+  const handleDelete = (e) => {
+    e.preventDefault();
+    if (window.confirm('Are you sure you want to delete this trip?')) {
+      onDelete(trip._id);
+    }
   };
-  
-  const gradientClass = locationGradients[location.split(',')[0]] || locationGradients.Default;
 
   return (
-    <div className="relative group">
-      {/* Animated background layer */}
-      <div className={`absolute inset-0 bg-gradient-to-br ${gradientClass} rounded-2xl blur-md opacity-60 group-hover:opacity-80 transition-all duration-500 -z-10`}></div>
-      
-      {/* Glow effect */}
-      <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-white/5 rounded-2xl opacity-0 group-hover:opacity-30 transition-opacity duration-300 -z-10"></div>
-      
-      {/* Main card */}
-      <div className="relative bg-gradient-to-br from-slate-800/80 to-gray-900/90 backdrop-blur-xl border border-slate-700/50 rounded-2xl shadow-xl shadow-slate-900/30 p-5 transition-all duration-300 hover:border-slate-600/70 hover:shadow-sky-900/30 group-hover:-translate-y-1">
-        {/* Location header with gradient text */}
-        <div className="flex items-start justify-between mb-4">
-          <div className="flex items-center gap-2">
-            <MapPin className="w-5 h-5 text-rose-400 flex-shrink-0" />
-            <h2 className="text-xl font-bold bg-gradient-to-r from-sky-400 to-cyan-400 bg-clip-text text-transparent">
-              {location}
-            </h2>
-          </div>
-          
-          {/* People count with animation */}
-          <div className="relative flex items-center px-2 py-1 bg-slate-800/60 rounded-full border border-slate-700/50 group-hover:bg-slate-800/80 transition-colors">
-            <span className="text-xs font-medium text-slate-300">{people}</span>
-            <div className="absolute -top-1 -right-1 w-2 h-2 bg-green-400 rounded-full animate-ping opacity-75"></div>
-            <div className="absolute -top-1 -right-1 w-2 h-2 bg-green-400 rounded-full"></div>
+    <div className="autumn-card p-6 hover-autumn">
+      {/* Trip Header */}
+      <div className="flex items-start justify-between mb-4">
+        <div className="flex-1">
+          <h3 className="text-xl font-bold text-autumn-red mb-2">{trip.location}</h3>
+          <div className="flex items-center gap-2 text-autumn-brown text-sm">
+            <MapPin className="w-4 h-4" />
+            <span>{trip.location}</span>
           </div>
         </div>
-
-        {/* Trip details grid */}
-        <div className="grid grid-cols-2 gap-3 mb-5">
-          <div className="p-3 bg-slate-800/40 backdrop-blur-sm rounded-xl border border-slate-700/50 group-hover:border-sky-500/30 transition-colors">
-            <p className="text-xs text-slate-400 font-medium mb-1">Budget</p>
-            <p className="text-sm font-medium text-slate-200">{budget}</p>
-          </div>
-          
-          <div className="p-3 bg-slate-800/40 backdrop-blur-sm rounded-xl border border-slate-700/50 group-hover:border-amber-500/30 transition-colors">
-            <p className="text-xs text-slate-400 font-medium mb-1">Duration</p>
-            <p className="text-sm font-medium text-slate-200">{duration} day{duration > 1 ? 's' : ''}</p>
-          </div>
-          
-          <div className="p-3 bg-slate-800/40 backdrop-blur-sm rounded-xl border border-slate-700/50 group-hover:border-purple-500/30 transition-colors">
-            <p className="text-xs text-slate-400 font-medium mb-1">Season</p>
-            <p className="text-sm font-medium text-slate-200">Spring</p>
-          </div>
-          
-          <div className="p-3 bg-slate-800/40 backdrop-blur-sm rounded-xl border border-slate-700/50 group-hover:border-emerald-500/30 transition-colors">
-            <p className="text-xs text-slate-400 font-medium mb-1">Status</p>
-            <p className="text-sm font-medium text-emerald-400">Planned</p>
-          </div>
-        </div>
-
-        {/* Action buttons */}
-        <div className="flex justify-between border-t border-slate-700/50 pt-4">
+        <div className="flex items-center gap-2">
           <button
-            onClick={() => onView(trip._id)}
-            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-sky-600/60 to-cyan-600/60 rounded-lg text-slate-200 font-medium hover:from-sky-600/80 hover:to-cyan-600/80 transition-all group/button"
+            onClick={handleDelete}
+            className="p-2 bg-autumn-coral/10 hover:bg-autumn-coral/20 text-autumn-coral hover:text-autumn-red rounded-lg transition-colors"
+            title="Delete trip"
           >
-            <Eye className="w-4 h-4 transition-transform group-hover/button:scale-110" />
-            <span>View Details</span>
-          </button>
-
-          <button
-            onClick={() => onDelete(trip._id)}
-            className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-rose-700/60 to-pink-700/60 rounded-lg text-slate-200 font-medium hover:from-rose-700/80 hover:to-pink-700/80 transition-all group/button"
-          >
-            <Trash2 className="w-4 h-4 transition-transform group-hover/button:scale-110" />
-            <span>Delete</span>
+            <Trash2 className="w-4 h-4" />
           </button>
         </div>
-        
-        {/* Floating elements */}
-        <div className="absolute top-4 right-4 w-2 h-2 bg-cyan-400 rounded-full animate-ping opacity-75"></div>
-        <div className="absolute bottom-4 left-4 w-1 h-1 bg-white rounded-full opacity-30 animate-pulse"></div>
       </div>
+
+      {/* Trip Details */}
+      <div className="grid grid-cols-2 gap-4 mb-6">
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-8 bg-autumn-orange/20 rounded-lg flex items-center justify-center">
+            <DollarSign className="w-4 h-4 text-autumn-orange" />
+          </div>
+          <div>
+            <p className="text-xs text-autumn-brown">Budget</p>
+            <p className="text-sm font-medium text-autumn-red capitalize">{trip.budget}</p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-8 bg-autumn-coral/20 rounded-lg flex items-center justify-center">
+            <Users className="w-4 h-4 text-autumn-coral" />
+          </div>
+          <div>
+            <p className="text-xs text-autumn-brown">Travelers</p>
+            <p className="text-sm font-medium text-autumn-red">{trip.people}</p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-8 bg-autumn-red/20 rounded-lg flex items-center justify-center">
+            <Calendar className="w-4 h-4 text-autumn-red" />
+          </div>
+          <div>
+            <p className="text-xs text-autumn-brown">Duration</p>
+            <p className="text-sm font-medium text-autumn-red">{trip.duration} days</p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-8 bg-autumn-brown/20 rounded-lg flex items-center justify-center">
+            <MapPin className="w-4 h-4 text-autumn-brown" />
+          </div>
+          <div>
+            <p className="text-xs text-autumn-brown">Places</p>
+            <p className="text-sm font-medium text-autumn-red">
+              {trip.itinerary?.length || 0} days
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Action Button */}
+      <Link
+        to={`/trip/${trip._id}`}
+        className="w-full btn-autumn-secondary flex items-center justify-center gap-2"
+      >
+        <Eye className="w-4 h-4" />
+        View Details
+      </Link>
     </div>
   );
 };

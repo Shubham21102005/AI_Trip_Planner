@@ -1,129 +1,200 @@
-import React, { useState } from 'react'
-import { useNavigate, Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { Mail, Lock, Eye, EyeOff, User, Coffee } from 'lucide-react';
 
-function RegisterPage() {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [name, setName] = useState('');
-    const [error, setError] = useState('');
-    const [loading, setLoading] = useState(false);
-    const navigate = useNavigate();
-    const { register } = useAuth();
+const RegisterPage = () => {
+  const [formData, setFormData] = useState({
+    fullName: '',
+    email: '',
+    password: '',
+    confirmPassword: ''
+  });
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  
+  const { register } = useAuth();
+  const navigate = useNavigate();
 
-    const handleRegister = async (e) => {
-        e.preventDefault()
-        setError('');
-        setLoading(true);
-        try {
-            await register(name, email, password);
-            navigate('/login');
-        } catch (error) {
-            setError(error.response?.data?.message || 'SignUp failed');
-        } finally {
-            setLoading(false);
-        }
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+
+    if (formData.password !== formData.confirmPassword) {
+      setError('Passwords do not match');
+      setLoading(false);
+      return;
     }
 
-    return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-slate-900 to-black p-4">
-            <div className="relative w-full max-w-md">
-                {/* Animated gradient background */}
-                <div className="absolute inset-0 bg-gradient-to-r from-cyan-900/20 via-blue-900/20 to-indigo-900/30 rounded-3xl rotate-6 -z-10 animate-pulse"></div>
-                
-                {/* Main card */}
-                <form 
-                    onSubmit={handleRegister}
-                    className="relative bg-gradient-to-br from-slate-800/80 to-gray-900/90 backdrop-blur-xl border border-slate-700/50 rounded-3xl shadow-2xl shadow-blue-900/30 p-8 space-y-6"
-                >
-                    <div className="text-center">
-                        <h2 className="text-3xl font-bold bg-gradient-to-r from-cyan-400 via-blue-400 to-indigo-400 bg-clip-text text-transparent">
-                            Create Your Account
-                        </h2>
-                        <p className="mt-2 text-slate-400">Join our community today</p>
-                    </div>
+    try {
+      await register(formData.fullName, formData.email, formData.password);
+      navigate('/dashboard');
+    } catch (error) {
+      setError(error.response?.data?.message || 'Registration failed. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
-                    {error && (
-                        <div className="p-3 bg-rose-900/40 border border-rose-700 rounded-lg text-rose-200 text-center animate-pulse">
-                            {error}
-                        </div>
-                    )}
+  return (
+    <div className="min-h-screen bg-autumn-gradient flex items-center justify-center p-6">
+      {/* Warm background elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute top-20 left-10 w-32 h-32 bg-autumn-orange/20 rounded-full blur-3xl animate-gentle-float"></div>
+        <div className="absolute bottom-20 right-10 w-40 h-40 bg-autumn-coral/20 rounded-full blur-3xl animate-gentle-float" style={{ animationDelay: '1s' }}></div>
+      </div>
 
-                    <div className="space-y-4">
-                        <div>
-                            <label className="block text-slate-300 mb-2 text-sm font-medium">
-                                Full Name
-                            </label>
-                            <input
-                                type="text"
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
-                                required
-                                className="w-full px-4 py-3 bg-slate-800/70 border border-slate-700 rounded-xl text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-transparent transition-all"
-                                placeholder="John Doe"
-                            />
-                        </div>
-
-                        <div>
-                            <label className="block text-slate-300 mb-2 text-sm font-medium">
-                                Email
-                            </label>
-                            <input
-                                type="email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                required
-                                className="w-full px-4 py-3 bg-slate-800/70 border border-slate-700 rounded-xl text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-transparent transition-all"
-                                placeholder="hello@example.com"
-                            />
-                        </div>
-
-                        <div>
-                            <label className="block text-slate-300 mb-2 text-sm font-medium">
-                                Password
-                            </label>
-                            <input
-                                type="password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                required
-                                className="w-full px-4 py-3 bg-slate-800/70 border border-slate-700 rounded-xl text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-transparent transition-all"
-                                placeholder="••••••••"
-                            />
-                        </div>
-                    </div>
-
-                    <button
-                        type="submit"
-                        disabled={loading}
-                        className="w-full py-3.5 px-4 bg-gradient-to-r from-cyan-600 via-blue-600 to-indigo-600 hover:from-cyan-700 hover:via-blue-700 hover:to-indigo-700 disabled:from-slate-600 disabled:via-slate-700 disabled:to-slate-800 rounded-xl text-white font-medium transition-all duration-300 transform hover:scale-[1.02] shadow-lg shadow-blue-900/30 hover:shadow-xl hover:shadow-indigo-900/40 flex items-center justify-center gap-2"
-                    >
-                        {loading ? (
-                            <>
-                                <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                                <span>Creating Account...</span>
-                            </>
-                        ) : (
-                            <span>Create Account</span>
-                        )}
-                    </button>
-
-                    <p className="text-center text-slate-500 text-sm pt-4">
-                        Already have an account?{" "}
-                        <Link 
-                            to="/login" 
-                            className="ml-1 text-cyan-400 hover:text-cyan-300 underline underline-offset-4 decoration-cyan-700 transition-colors"
-                        >
-                            Login
-                        </Link>
-                    </p>
-                </form>
-                
-                {/* Glowing effect */}
-                <div className="absolute top-0 left-1/4 w-1/2 h-1 bg-gradient-to-r from-transparent via-cyan-500 to-transparent blur-sm -z-10"></div>
+      <div className="relative z-10 w-full max-w-md">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <div className="flex items-center justify-center gap-3 mb-6">
+            <div className="w-12 h-12 bg-autumn-warm rounded-2xl flex items-center justify-center">
+              <Coffee className="w-7 h-7 text-white" />
             </div>
+            <h1 className="text-3xl font-bold text-autumn-red">Join the Adventure</h1>
+          </div>
+          <p className="text-autumn-brown">
+            Create your account and start planning amazing journeys
+          </p>
         </div>
-    )
-}
 
-export default RegisterPage
+        {/* Register Form */}
+        <div className="autumn-card p-8">
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {error && (
+              <div className="p-4 bg-autumn-coral/10 border border-autumn-coral/20 rounded-xl text-autumn-coral text-sm">
+                {error}
+              </div>
+            )}
+
+            <div>
+              <label htmlFor="fullName" className="block text-sm font-medium text-autumn-brown mb-2">
+                Full Name
+              </label>
+              <div className="relative">
+                <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-autumn-gray" />
+                <input
+                  type="text"
+                  id="fullName"
+                  name="fullName"
+                  value={formData.fullName}
+                  onChange={handleChange}
+                  required
+                  className="autumn-input w-full pl-10"
+                  placeholder="Enter your full name"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-autumn-brown mb-2">
+                Email Address
+              </label>
+              <div className="relative">
+                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-autumn-gray" />
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                  className="autumn-input w-full pl-10"
+                  placeholder="Enter your email"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label htmlFor="password" className="block text-sm font-medium text-autumn-brown mb-2">
+                Password
+              </label>
+              <div className="relative">
+                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-autumn-gray" />
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  id="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  required
+                  className="autumn-input w-full pl-10 pr-10"
+                  placeholder="Create a password"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-autumn-gray hover:text-autumn-brown"
+                >
+                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                </button>
+              </div>
+            </div>
+
+            <div>
+              <label htmlFor="confirmPassword" className="block text-sm font-medium text-autumn-brown mb-2">
+                Confirm Password
+              </label>
+              <div className="relative">
+                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-autumn-gray" />
+                <input
+                  type={showConfirmPassword ? 'text' : 'password'}
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  required
+                  className="autumn-input w-full pl-10 pr-10"
+                  placeholder="Confirm your password"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-autumn-gray hover:text-autumn-brown"
+                >
+                  {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                </button>
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="btn-autumn-primary w-full py-3 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {loading ? 'Creating Account...' : 'Create Account'}
+            </button>
+          </form>
+
+          <div className="mt-6 text-center">
+            <p className="text-autumn-brown">
+              Already have an account?{' '}
+              <Link to="/login" className="text-autumn-coral hover:text-autumn-red font-medium">
+                Sign in here
+              </Link>
+            </p>
+          </div>
+        </div>
+
+        {/* Back to home */}
+        <div className="text-center mt-6">
+          <Link to="/" className="text-autumn-brown hover:text-autumn-red font-medium">
+            ← Back to home
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default RegisterPage;

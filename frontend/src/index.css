@@ -1,65 +1,156 @@
 @import "tailwindcss";
+@tailwind utilities;
 
-/* Custom animations */
-@keyframes ping-slow {
-  0% { transform: scale(0.8); opacity: 0.8; }
-  75%, 100% { transform: scale(1.4); opacity: 0; }
+/* Custom autumnal color palette */
+:root {
+  --autumn-red: #8c0327;
+  --autumn-coral: #d85251;
+  --autumn-orange: #d59b6b;
+  --autumn-brown: #826a5c;
+  --autumn-white: #f1f1f1;
+  --autumn-light-gray: #dbdbdb;
+  --autumn-gray: #c5c5c5;
 }
 
-@keyframes float1 {
-  0% { transform: translateX(0) translateY(0); }
-  50% { transform: translateX(-20px) translateY(-10px); }
-  100% { transform: translateX(0) translateY(0); }
+/* Smooth transitions */
+* {
+  transition: all 0.2s ease-in-out;
 }
 
-@keyframes float2 {
-  0% { transform: translateX(0) translateY(0); }
-  50% { transform: translateX(15px) translateY(-15px); }
-  100% { transform: translateX(0) translateY(0); }
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
 }
 
-@keyframes float3 {
-  0% { transform: translateX(0) translateY(0); }
-  50% { transform: translateX(-10px) translateY(10px); }
-  100% { transform: translateX(0) translateY(0); }
+::-webkit-scrollbar-track {
+  background: var(--autumn-light-gray);
 }
 
-@keyframes twinkle {
-  0% { opacity: 0.2; }
-  50% { opacity: 1; }
-  100% { opacity: 0.2; }
+::-webkit-scrollbar-thumb {
+  background: var(--autumn-brown);
+  border-radius: 4px;
 }
 
-@keyframes twinkle-delay {
-  0% { opacity: 0.2; }
-  30% { opacity: 1; }
-  60% { opacity: 0.2; }
-  100% { opacity: 0.2; }
+::-webkit-scrollbar-thumb:hover {
+  background: var(--autumn-orange);
 }
 
-@keyframes twinkle-delay2 {
-  0% { opacity: 0.2; }
-  60% { opacity: 1; }
-  100% { opacity: 0.2; }
+/* Warm gradient backgrounds */
+.bg-autumn-gradient {
+  background: linear-gradient(135deg, #f1f1f1 0%, #dbdbdb 50%, #c5c5c5 100%);
 }
 
-@keyframes fade-in {
-  0% { opacity: 0; transform: translateY(10px); }
-  100% { opacity: 1; transform: translateY(0); }
+.bg-autumn-warm {
+  background: linear-gradient(135deg, #d59b6b 0%, #d85251 50%, #8c0327 100%);
 }
 
-@keyframes fade-in-up {
-  0% { opacity: 0; transform: translateY(20px); }
-  100% { opacity: 1; transform: translateY(0); }
+.bg-autumn-card {
+  background: linear-gradient(145deg, #f1f1f1 0%, #dbdbdb 100%);
+  box-shadow: 0 8px 32px rgba(140, 3, 39, 0.1);
 }
 
-/* Animation classes */
-.animate-ping-slow { animation: ping-slow 3s cubic-bezier(0, 0, 0.2, 1) infinite; }
-.animate-float1 { animation: float1 8s ease-in-out infinite; }
-.animate-float2 { animation: float2 10s ease-in-out infinite; }
-.animate-float3 { animation: float3 12s ease-in-out infinite; }
-.animate-twinkle { animation: twinkle 4s ease-in-out infinite; }
-.animate-twinkle-delay { animation: twinkle-delay 5s ease-in-out infinite; }
-.animate-twinkle-delay2 { animation: twinkle-delay2 6s ease-in-out infinite; }
-.animate-fade-in { animation: fade-in 1s ease-out forwards; }
-.animate-fade-in-up { animation: fade-in-up 1s ease-out forwards; }
+/* Cozy hover effects */
+.hover-autumn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(140, 3, 39, 0.15);
+}
+
+/* Autumn button styles */
+.btn-autumn-primary {
+  background: linear-gradient(135deg, #8c0327 0%, #d85251 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 24px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-autumn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(140, 3, 39, 0.3);
+}
+
+.btn-autumn-secondary {
+  background: linear-gradient(135deg, #d59b6b 0%, #826a5c 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 24px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-autumn-secondary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(213, 155, 107, 0.3);
+}
+
+/* Autumn text colors */
+.text-autumn-red { color: #8c0327; }
+.text-autumn-coral { color: #d85251; }
+.text-autumn-orange { color: #d59b6b; }
+.text-autumn-brown { color: #826a5c; }
+
+/* Autumn background colors */
+.bg-autumn-red { background-color: #8c0327; }
+.bg-autumn-coral { background-color: #d85251; }
+.bg-autumn-orange { background-color: #d59b6b; }
+.bg-autumn-brown { background-color: #826a5c; }
+.bg-autumn-white { background-color: #f1f1f1; }
+.bg-autumn-light-gray { background-color: #dbdbdb; }
+.bg-autumn-gray { background-color: #c5c5c5; }
+
+/* Cozy animations */
+@keyframes gentle-float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-gentle-float {
+  animation: gentle-float 3s ease-in-out infinite;
+}
+
+@keyframes warm-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
+}
+
+.animate-warm-pulse {
+  animation: warm-pulse 2s ease-in-out infinite;
+}
+
+/* Autumn card styles */
+.autumn-card {
+  background: linear-gradient(145deg, #f1f1f1 0%, #dbdbdb 100%);
+  border-radius: 20px;
+  border: 1px solid #c5c5c5;
+  box-shadow: 0 8px 32px rgba(140, 3, 39, 0.1);
+  transition: all 0.3s ease;
+}
+
+.autumn-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 48px rgba(140, 3, 39, 0.15);
+  border-color: #d59b6b;
+}
+
+/* Warm input styles */
+.autumn-input {
+  background: #f1f1f1;
+  border: 2px solid #dbdbdb;
+  border-radius: 12px;
+  padding: 12px 16px;
+  color: #826a5c;
+  transition: all 0.3s ease;
+}
+
+.autumn-input:focus {
+  outline: none;
+  border-color: #d59b6b;
+  box-shadow: 0 0 0 3px rgba(213, 155, 107, 0.1);
+}
+
+.autumn-input::placeholder {
+  color: #c5c5c5;
+}
