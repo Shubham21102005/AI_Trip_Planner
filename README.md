@@ -65,7 +65,7 @@ npm install
 
 Create a `.env` file in the frontend directory:
 ```env
-VITE_BACKEND=http://localhost:5000/api
+VITE_BACKEND=http://localhost:8080/api
 ```
 
 ### 4. Run the Application
