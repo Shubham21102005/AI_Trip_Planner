@@ -11,7 +11,7 @@ const router= express.Router();
 
 router.post('/create', requireAuth, createTrip);
 router.get('/saved', requireAuth, getSavedTrips);
-router.get('/view/:id', requireAuth, viewTrip);
-router.delete('/delete/:id', requireAuth, deleteTrip);
+router.get('/:id', requireAuth, viewTrip);
+router.delete('/:id', requireAuth, deleteTrip);
 
 module.exports= router;

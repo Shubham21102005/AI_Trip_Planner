@@ -13,7 +13,7 @@ const tripResponseSchema = {
   type: Type.OBJECT,
   properties: {
     location: { type: Type.STRING },
-    budget: { type: Type.STRING, enum: ['cheap', 'moderate', 'expensive'] },
+    budget: { type: Type.STRING, enum: ['cheap', 'moderate', 'luxury'] },
     people: { type: Type.INTEGER },
     duration: { type: Type.INTEGER },
     hotels: {
@@ -78,7 +78,7 @@ const tripResponseSchema = {
 };
 
 export async function createTripAI(location, budget, people, duration) {
-  const validBudgets = ['cheap', 'moderate', 'expensive'];
+  const validBudgets = ['cheap', 'moderate', 'luxury'];
   if (
     !location ||
     !validBudgets.includes(budget) ||
@@ -101,7 +101,6 @@ export async function createTripAI(location, budget, people, duration) {
       }
     });
 
-    // ⚠️ Fix: .text is a **property**, not a method:
     // JSON mode → response.text returns the full JSON string.
     const jsonString = response.text;
     const tripData = JSON.parse(jsonString);

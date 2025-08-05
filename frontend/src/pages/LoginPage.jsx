@@ -1,23 +1,27 @@
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { useNavigate, Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 function LoginPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
     
     const navigate = useNavigate();
+    const { login } = useAuth();
 
     const handleLogin = async (e) => {
         e.preventDefault();
         setError("");
+        setLoading(true);
         try {
-            const res = await axios.post(`${import.meta.env.VITE_BACKEND}/auth/login`, { email, password }, { withCredentials: true })
-            console.log(res.data);
+            await login(email, password);
             navigate('/dashboard');
         } catch (error) {
             setError(error.response?.data?.message || 'Login failed');
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -77,19 +81,27 @@ function LoginPage() {
 
                     <button
                         type="submit"
-                        className="w-full py-3.5 px-4 bg-gradient-to-r from-purple-600 via-pink-500 to-rose-500 hover:from-purple-700 hover:via-pink-600 hover:to-rose-600 rounded-xl text-white font-medium transition-all duration-300 transform hover:scale-[1.02] shadow-lg shadow-purple-900/30 hover:shadow-xl hover:shadow-rose-900/40"
+                        disabled={loading}
+                        className="w-full py-3.5 px-4 bg-gradient-to-r from-purple-600 via-pink-500 to-rose-500 hover:from-purple-700 hover:via-pink-600 hover:to-rose-600 disabled:from-slate-600 disabled:via-slate-700 disabled:to-slate-800 rounded-xl text-white font-medium transition-all duration-300 transform hover:scale-[1.02] shadow-lg shadow-purple-900/30 hover:shadow-xl hover:shadow-rose-900/40 flex items-center justify-center gap-2"
                     >
-                        Login
+                        {loading ? (
+                            <>
+                                <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                                <span>Logging in...</span>
+                            </>
+                        ) : (
+                            <span>Login</span>
+                        )}
                     </button>
 
                     <p className="text-center text-slate-500 text-sm pt-4">
                         Don't have an account? 
-                        <a 
-                            href="/register" 
+                        <Link 
+                            to="/register" 
                             className="ml-1 text-purple-400 hover:text-purple-300 underline underline-offset-4 decoration-purple-700 transition-colors"
                         >
                             Register
-                        </a>
+                        </Link>
                     </p>
                 </form>
                 

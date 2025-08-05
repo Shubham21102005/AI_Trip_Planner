@@ -9,7 +9,7 @@ const tripRoutes= require('./routes/tripRoutes.js')
 
 dotenv.config()
 const app= express();
-const PORT= process.env.PORT || 5000;
+const PORT= process.env.PORT ;
 
 // CORS configuration for credentials
 app.use(cors({
@@ -27,7 +27,7 @@ app.use('/api/auth', authRoutes)
 app.use('/api/trips', tripRoutes)
 
 
-app.listen(PORT, async ()=>{
+app.listen(PORT, async () =>{
     try{
         await connectDB();
         console.log(`App is listening on ${PORT}`);

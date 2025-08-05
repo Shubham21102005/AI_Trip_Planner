@@ -46,7 +46,7 @@ const getSavedTrips= async (req, res)=>{
         options: { sort: { createdAt: -1 } } 
         })
         if(!user) return res.status(404).json({message: 'User not found'})
-        res.status(200).json({savedTrips: user.savedTrips})
+        res.status(200).json(user.savedTrips)
     } catch (error) {
         res.status(500).json({message: 'Internal server error'})
     
@@ -59,7 +59,7 @@ const viewTrip= async (req,res)=>{
         const trip= await Trip.findById(req.params.id)
         if(!user || !trip) return res.status(404).json({message: 'User or trip not found'})
         if(!user.savedTrips.includes(trip._id)) return res.status(403).json({message: 'Unauthorized'})
-        res.status(200).json({trip})
+        res.status(200).json(trip)
     } catch (error) {
         res.status(500).json({message: 'Internal server error'})
     }

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import TripCard from '../components/TripCard.jsx';
+import Header from '../components/Header.jsx';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Plus } from 'lucide-react';
@@ -11,7 +12,7 @@ function Dashboard() {
 
     const fetchTrips = async () => {
         try {
-            const res = await axios.get(`${import.meta.env.VITE_BACKEND}/trip/saved`, {
+            const res = await axios.get(`${import.meta.env.VITE_BACKEND}/trips/saved`, {
                 withCredentials: true,
             });
             setTrips(res.data);
@@ -25,12 +26,28 @@ function Dashboard() {
         }
     };
 
+    const handleDeleteTrip = async (tripId) => {
+        if (window.confirm('Are you sure you want to delete this trip?')) {
+            try {
+                await axios.delete(`${import.meta.env.VITE_BACKEND}/trips/${tripId}`, {
+                    withCredentials: true
+                });
+                // Refresh the trips list
+                fetchTrips();
+            } catch (error) {
+                console.error('Failed to delete trip:', error);
+            }
+        }
+    };
+
     useEffect(() => {
         fetchTrips();
     }, []);
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-[#0c1120] via-[#0d1c3a] to-[#1a2d4d] p-6 relative overflow-hidden">
+        <div className="min-h-screen bg-gradient-to-br from-[#0c1120] via-[#0d1c3a] to-[#1a2d4d] relative overflow-hidden">
+            <Header />
+            <div className="p-6">
             {/* Animated background elements */}
             <div className="absolute inset-0 overflow-hidden">
                 <div className="absolute top-1/4 left-1/4 w-80 h-80 bg-gradient-to-r from-blue-500/10 to-teal-400/10 rounded-full blur-3xl animate-pulse"></div>
@@ -166,22 +183,17 @@ function Dashboard() {
                                     key={trip._id} 
                                     trip={trip} 
                                     onView={(id) => navigate(`/trip/${id}`)}
-                                    onDelete={(id) => console.log('Delete trip', id)}
+                                    onDelete={handleDeleteTrip}
                                 />
                             ))}
                         </div>
                     )}
                 </div>
             </div>
-            
-            <style jsx global>{`
-                @keyframes ping-slow {
-                    0% { transform: scale(0.8); opacity: 0.8; }
-                    75%, 100% { transform: scale(1.4); opacity: 0; }
-                }
-                .animate-ping-slow { animation: ping-slow 3s cubic-bezier(0, 0, 0.2, 1) infinite; }
-            `}</style>
         </div>
+            
+
+    </div>
     );
 }
 

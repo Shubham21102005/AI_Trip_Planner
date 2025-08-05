@@ -109,60 +109,7 @@ const Landing = () => {
         </div>
       </div>
       
-      <style jsx global>{`
-        @keyframes float1 {
-          0% { transform: translateX(0) translateY(0); }
-          50% { transform: translateX(-20px) translateY(-10px); }
-          100% { transform: translateX(0) translateY(0); }
-        }
-        @keyframes float2 {
-          0% { transform: translateX(0) translateY(0); }
-          50% { transform: translateX(15px) translateY(-15px); }
-          100% { transform: translateX(0) translateY(0); }
-        }
-        @keyframes float3 {
-          0% { transform: translateX(0) translateY(0); }
-          50% { transform: translateX(-10px) translateY(10px); }
-          100% { transform: translateX(0) translateY(0); }
-        }
-        @keyframes twinkle {
-          0% { opacity: 0.2; }
-          50% { opacity: 1; }
-          100% { opacity: 0.2; }
-        }
-        @keyframes twinkle-delay {
-          0% { opacity: 0.2; }
-          30% { opacity: 1; }
-          60% { opacity: 0.2; }
-          100% { opacity: 0.2; }
-        }
-        @keyframes twinkle-delay2 {
-          0% { opacity: 0.2; }
-          60% { opacity: 1; }
-          100% { opacity: 0.2; }
-        }
-        @keyframes ping-slow {
-          0% { transform: scale(0.8); opacity: 0.8; }
-          75%, 100% { transform: scale(1.4); opacity: 0; }
-        }
-        @keyframes fade-in {
-          0% { opacity: 0; transform: translateY(10px); }
-          100% { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes fade-in-up {
-          0% { opacity: 0; transform: translateY(20px); }
-          100% { opacity: 1; transform: translateY(0); }
-        }
-        .animate-float1 { animation: float1 8s ease-in-out infinite; }
-        .animate-float2 { animation: float2 10s ease-in-out infinite; }
-        .animate-float3 { animation: float3 12s ease-in-out infinite; }
-        .animate-twinkle { animation: twinkle 4s ease-in-out infinite; }
-        .animate-twinkle-delay { animation: twinkle-delay 5s ease-in-out infinite; }
-        .animate-twinkle-delay2 { animation: twinkle-delay2 6s ease-in-out infinite; }
-        .animate-ping-slow { animation: ping-slow 3s cubic-bezier(0, 0, 0.2, 1) infinite; }
-        .animate-fade-in { animation: fade-in 1s ease-out forwards; }
-        .animate-fade-in-up { animation: fade-in-up 1s ease-out forwards; }
-      `}</style>
+
     </div>
   );
 };

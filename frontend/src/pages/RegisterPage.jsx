@@ -1,23 +1,27 @@
-import axios from 'axios';
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 function RegisterPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
     const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+    const { register } = useAuth();
 
     const handleRegister = async (e) => {
         e.preventDefault()
         setError('');
+        setLoading(true);
         try {
-            const res = await axios.post(`${import.meta.env.VITE_BACKEND}/auth/register`, { fullName: name, email, password }, { withCredentials: true })
-            console.log(res.data);
+            await register(name, email, password);
             navigate('/login');
         } catch (error) {
             setError(error.response?.data?.message || 'SignUp failed');
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -91,19 +95,27 @@ function RegisterPage() {
 
                     <button
                         type="submit"
-                        className="w-full py-3.5 px-4 bg-gradient-to-r from-cyan-600 via-blue-600 to-indigo-600 hover:from-cyan-700 hover:via-blue-700 hover:to-indigo-700 rounded-xl text-white font-medium transition-all duration-300 transform hover:scale-[1.02] shadow-lg shadow-blue-900/30 hover:shadow-xl hover:shadow-indigo-900/40"
+                        disabled={loading}
+                        className="w-full py-3.5 px-4 bg-gradient-to-r from-cyan-600 via-blue-600 to-indigo-600 hover:from-cyan-700 hover:via-blue-700 hover:to-indigo-700 disabled:from-slate-600 disabled:via-slate-700 disabled:to-slate-800 rounded-xl text-white font-medium transition-all duration-300 transform hover:scale-[1.02] shadow-lg shadow-blue-900/30 hover:shadow-xl hover:shadow-indigo-900/40 flex items-center justify-center gap-2"
                     >
-                        Create Account
+                        {loading ? (
+                            <>
+                                <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                                <span>Creating Account...</span>
+                            </>
+                        ) : (
+                            <span>Create Account</span>
+                        )}
                     </button>
 
                     <p className="text-center text-slate-500 text-sm pt-4">
                         Already have an account?{" "}
-                        <a 
-                            href="/login" 
+                        <Link 
+                            to="/login" 
                             className="ml-1 text-cyan-400 hover:text-cyan-300 underline underline-offset-4 decoration-cyan-700 transition-colors"
                         >
                             Login
-                        </a>
+                        </Link>
                     </p>
                 </form>
                 
