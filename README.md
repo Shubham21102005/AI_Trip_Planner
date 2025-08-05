@@ -84,7 +84,7 @@ npm run dev
 
 The application will be available at:
 - Frontend: http://localhost:5173
-- Backend: http://localhost:5000
+- Backend: http://localhost:8080
 
 ## Usage
 
@@ -143,5 +143,6 @@ tripPlanner/
 5. Submit a pull request
 
 ## License
+
 
 This project is licensed under the MIT License. 
