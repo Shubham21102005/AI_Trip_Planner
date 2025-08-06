@@ -87,7 +87,6 @@ export async function createTripAI(location, budget, people, duration) {
   ) {
     throw new Error('Invalid input parameters');
   }
-  
 
   const prompt = generatePrompt(location, budget, people, duration);
 
@@ -101,16 +100,22 @@ export async function createTripAI(location, budget, people, duration) {
       }
     });
 
-    // JSON mode → response.text returns the full JSON string.
-    const jsonString = response.text;
-    const tripData = JSON.parse(jsonString);
+    // 🧹 Sanitize response
+    let jsonString = response.text.trim();
 
+    // Remove Markdown formatting (```)
+    if (jsonString.startsWith('```')) {
+      jsonString = jsonString.replace(/```json|```/g, '').trim();
+    }
+
+    // Remove trailing commas that break JSON parsing
+    jsonString = jsonString.replace(/,\s*([}\]])/g, '$1');
+
+    // Parse safely
+    const tripData = JSON.parse(jsonString);
     return tripData;
   } catch (err) {
-    console.error('createTripAI error:', err.code ?? err.message ?? err);
-    if (err.message?.includes('InvalidArgument')) {
-      throw new Error('Response schema violation — verify prompt vs schema');
-    }
-    throw err;
+    console.error('❌ createTripAI error:', err.message ?? err.code ?? err);
+    throw new Error('Failed to generate trip data from AI');
   }
 }

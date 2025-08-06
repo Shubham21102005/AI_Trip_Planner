@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -109,7 +108,7 @@ const TripDetails = () => {
               <p className="text-autumn-brown">Your AI-generated travel plan</p>
             </div>
           </div>
-          
+
           <button
             onClick={handleDelete}
             className="flex items-center gap-2 px-4 py-2 bg-autumn-coral/10 hover:bg-autumn-coral/20 text-autumn-coral hover:text-autumn-red rounded-xl transition-colors"
@@ -128,7 +127,7 @@ const TripDetails = () => {
             </div>
             <p className="text-xl font-bold text-autumn-red">{trip.location}</p>
           </div>
-          
+
           <div className="autumn-card p-6">
             <div className="flex items-center gap-3 mb-3">
               <DollarSign className="w-5 h-5 text-autumn-orange" />
@@ -136,7 +135,7 @@ const TripDetails = () => {
             </div>
             <p className="text-xl font-bold text-autumn-red capitalize">{trip.budget}</p>
           </div>
-          
+
           <div className="autumn-card p-6">
             <div className="flex items-center gap-3 mb-3">
               <Users className="w-5 h-5 text-autumn-red" />
@@ -144,7 +143,7 @@ const TripDetails = () => {
             </div>
             <p className="text-xl font-bold text-autumn-red">{trip.people}</p>
           </div>
-          
+
           <div className="autumn-card p-6">
             <div className="flex items-center gap-3 mb-3">
               <Calendar className="w-5 h-5 text-autumn-brown" />
@@ -161,10 +160,17 @@ const TripDetails = () => {
               <Hotel className="w-6 h-6 text-autumn-coral" />
               <h2 className="text-2xl font-bold text-autumn-red">Hotel Recommendations</h2>
             </div>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {trip.hotels.map((hotel, index) => (
-                <div key={index} className="bg-autumn-white border border-autumn-light-gray rounded-2xl p-6 hover:border-autumn-orange transition-all">
+                <div
+                  key={index}
+                  className="bg-autumn-white border border-autumn-light-gray rounded-2xl p-6 hover:border-autumn-orange transition-all cursor-pointer"
+                  onClick={() => {
+                    const query = `${hotel.name} ${trip.location}`.split(' ').join('+');
+                    window.open(`https://www.google.com/search?q=${query}`, '_blank');
+                  }}
+                >
                   <div className="flex items-start justify-between mb-4">
                     <h3 className="text-lg font-bold text-autumn-red">{hotel.name}</h3>
                     <div className="flex items-center gap-1">
@@ -172,9 +178,9 @@ const TripDetails = () => {
                       <span className="text-sm text-autumn-brown">{hotel.rating}</span>
                     </div>
                   </div>
-                  
+
                   <p className="text-autumn-brown text-sm mb-3">{hotel.description}</p>
-                  
+
                   <div className="flex items-center justify-between">
                     <span className="text-lg font-bold text-autumn-coral">${hotel.price}/night</span>
                     <span className="text-sm text-autumn-gray">{hotel.address}</span>
@@ -192,7 +198,7 @@ const TripDetails = () => {
               <Map className="w-6 h-6 text-autumn-red" />
               <h2 className="text-2xl font-bold text-autumn-red">Day-by-Day Itinerary</h2>
             </div>
-            
+
             <div className="space-y-6">
               {trip.itinerary.map((day, index) => (
                 <div key={index} className="bg-autumn-white border border-autumn-light-gray rounded-2xl p-6">
@@ -207,7 +213,7 @@ const TripDetails = () => {
                       )}
                     </div>
                   </div>
-                  
+
                   <div className="space-y-4">
                     {day.places && day.places.map((place, placeIndex) => (
                       <div key={placeIndex} className="flex items-start gap-4 p-4 bg-autumn-light-gray/50 rounded-xl">
@@ -237,7 +243,7 @@ const TripDetails = () => {
           </div>
         )}
 
-        {/* Fallback for trips without AI-generated content */}
+        {/* Fallback for missing content */}
         {(!trip.hotels || trip.hotels.length === 0) && (!trip.itinerary || trip.itinerary.length === 0) && (
           <div className="autumn-card p-8 text-center">
             <div className="w-24 h-24 bg-autumn-orange/20 rounded-2xl flex items-center justify-center mx-auto mb-6">
@@ -259,4 +265,4 @@ const TripDetails = () => {
   );
 };
 
-export default TripDetails; 
+export default TripDetails;
