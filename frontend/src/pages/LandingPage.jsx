@@ -45,7 +45,7 @@ const LandingPage = () => {
             <div className="mb-8">
               <h1 className="text-5xl md:text-7xl font-bold text-autumn-red mb-6 leading-tight">
                 Plan Your Perfect
-                <span className="block text-autumn-coral">Autumn Adventure</span>
+                <span className="block text-autumn-coral"> Adventure</span>
               </h1>
               <p className="text-xl text-autumn-brown max-w-2xl mx-auto leading-relaxed">
                 Let AI craft your dream journey with cozy accommodations, scenic routes, and unforgettable experiences. 
